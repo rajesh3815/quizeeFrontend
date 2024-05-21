@@ -1,0 +1,11 @@
+.container{
+    margin-top: 2rem;
+}
+.radioContainer{
+    display: flex;
+    margin-top: 2rem;
+    gap: 3rem;
+}
+.inputs{
+    margin-top: 2rem;
+}

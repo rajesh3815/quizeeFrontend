@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.detailContainer {
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 70%;
+    height: max-content;
+}
+
+.heading {
+    margin-top: 5rem;
+    font-size: 46px;
+    color: rgba(80, 118, 255, 1);
+}
+
+.detailNav {
+    background-color: rgba(80, 118, 255, 1);
+    color: white;
+    padding: 7px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+.quizeDetail{
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5.3rem;
+}
+.quizFunc{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.quizFunc span{
+    cursor: pointer;
+}

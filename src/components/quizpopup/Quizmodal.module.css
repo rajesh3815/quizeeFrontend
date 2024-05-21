@@ -1,0 +1,53 @@
+.mainContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.81);
+  position: absolute;
+}
+.container{
+    background-color: white;
+    width: 33rem;
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    border-radius: 7px;
+}
+
+.container input{
+    width: 23rem;
+    padding-left: 26px;
+    height: 3rem;
+    font-size: 20px;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+.buttons{
+    display: flex;
+    margin-top: 2rem;
+    gap: 6rem;
+    color: rgba(159, 159, 159, 1);
+}
+
+.buttons button{
+    border-color: white;
+    border-radius: 12px;
+    padding: 5px 25px;
+    cursor: pointer;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+}
+.cancelCont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10rem;
+}
+.cancelCont button{
+    cursor: pointer;
+}
