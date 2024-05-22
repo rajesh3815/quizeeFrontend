@@ -1,15 +1,43 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Style from "./Quizform.module.css";
 import Form from "../form/Form";
-import { createQuize } from "../../api/quiz";
-const Quizform = ({ isOpen, setisOpen, quizeDetail, setisQuizmodalopen }) => {
+import { createQuize, editQuiz } from "../../api/quiz";
+import { quizContext } from "../../Quizcontext";
+const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   const [slides, setSlides] = useState([
     { question: "", type: "text", options: ["", ""], answer: "" },
   ]);
+  const { updateData, setIsedit, isedit, updateTimer } =
+    useContext(quizContext);
+
   const [timer, setTimer] = useState();
   const [timerIndex, setTimerIndex] = useState(0);
   const [curindex, setCurindex] = useState(0);
   const [err, setErr] = useState();
+
+  useEffect(() => {
+    if (isedit) {
+      setSlides(updateData.slides);
+      setQuizedetail((prev) => ({ ...prev, quizeType: updateData.quizeType }));
+      if (updateTimer === "5sec") {
+        setTimerIndex(1);
+      } else {
+        setTimerIndex(2);
+      }
+      setTimer(updateTimer);
+    } else {
+      return;
+    }
+  }, [updateData]);
+  useEffect(()=>{
+
+  },[])
+  const editQuizhandel = async () => {
+    const id = updateData._id;
+    const res = await editQuiz(id, slides, timer);
+    
+    console.log(res);
+  };
   const timerHandeler = (idx, time) => {
     setTimerIndex(idx);
     if (time !== "") {
@@ -17,7 +45,6 @@ const Quizform = ({ isOpen, setisOpen, quizeDetail, setisQuizmodalopen }) => {
     } else {
       setTimer("");
     }
-    console.log(timer);
   };
   const addSlidehandeler = () => {
     if (slides.length <= 4) {
@@ -31,10 +58,7 @@ const Quizform = ({ isOpen, setisOpen, quizeDetail, setisQuizmodalopen }) => {
         },
       ]);
       setCurindex(slides.length);
-      console.log(curindex);
     } else {
-      console.log(curindex);
-      console.log(slides);
       return;
     }
   };
@@ -53,19 +77,20 @@ const Quizform = ({ isOpen, setisOpen, quizeDetail, setisQuizmodalopen }) => {
 
   const cancelModalhandler = () => {
     setisQuizmodalopen(false);
+    setIsedit(false);
   };
   const createQuizehandle = () => {
     if (timer === "") {
       setErr("timer Field is required");
       return;
     }
-    for(let i=0;i<slides.length;i++){
-      if(slides[i].question===""){
-        setErr("All quize fields are required")
-        return
+    for (let i = 0; i < slides.length; i++) {
+      if (slides[i].question === "") {
+        setErr("All quize fields are required");
+        return;
       }
     }
-    setErr("")
+    setErr("");
 
     createQuize(quizeDetail, timer, slides);
   };
@@ -103,7 +128,7 @@ const Quizform = ({ isOpen, setisOpen, quizeDetail, setisQuizmodalopen }) => {
         </div>
       </div>
       {/* mapping the forms */}
-      {slides.map((slide, index) => (
+      {slides?.map((slide, index) => (
         <React.Fragment key={index}>
           {curindex === index && (
             <Form
@@ -157,12 +182,22 @@ const Quizform = ({ isOpen, setisOpen, quizeDetail, setisQuizmodalopen }) => {
         >
           cancel
         </button>
-        <button
-          onClick={createQuizehandle}
-          style={{ backgroundColor: "green", color: "white" }}
-        >
-          create Qize
-        </button>
+
+        {isedit ? (
+          <button
+            onClick={editQuizhandel}
+            style={{ backgroundColor: "green", color: "white" }}
+          >
+            Edit Qize
+          </button>
+        ) : (
+          <button
+            onClick={createQuizehandle}
+            style={{ backgroundColor: "green", color: "white" }}
+          >
+            create Qize
+          </button>
+        )}
       </div>
       {err ? <span style={{ color: "red" }}>{err}</span> : ""}
     </div>

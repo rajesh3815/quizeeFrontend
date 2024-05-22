@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Style from "./Quizmodal.module.css";
 import Quizform from "../quizform/Quizform";
+import { quizContext } from "../../Quizcontext";
 const Quizmodal = ({ isQuizmodalopen, setisQuizmodalopen }) => {
-  const [isOpen, setisOpen] = useState(true);
+  const { isOpen, setisOpen } = useContext(quizContext);
+  // const [] = useState(true);
   const [quizeDetail, setQuizedetail] = useState({
     quizeName: "",
     quizeType: "",
@@ -68,10 +70,9 @@ const Quizmodal = ({ isQuizmodalopen, setisQuizmodalopen }) => {
         </div>
       ) : (
         <Quizform
-          isOpen={isOpen}
-          setisOpen={setisOpen}
           quizeDetail={quizeDetail}
           setisQuizmodalopen={setisQuizmodalopen}
+          setQuizedetail={setQuizedetail}
         />
       )}
     </div>

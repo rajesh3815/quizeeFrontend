@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Style from "./Dashboard.module.css";
 import Quizmodal from "../../components/quizpopup/Quizmodal";
 import Analytics from "../../components/analytics/Analytics";
+import { quizContext } from "../../Quizcontext";
+import Deletemodal from "../../components/deletemodal/Deletemodal";
 const Dashboard = () => {
   const [toggle, setToggle] = useState();
   const [isQuizmodalopen, setisQuizmodalopen] = useState(false);
   const [navState, setnavState] = useState("Dashboard");
+  const { deleteModal} =
+    useContext(quizContext);
   const quizClickhandeler = () => {
     setisQuizmodalopen(true);
   };
@@ -42,7 +46,11 @@ const Dashboard = () => {
           <div>Logout</div>
         </div>
         <div className={Style.contenet}>
-          {navState === "Dashboard" ? <div>Dash board</div> : <Analytics />}
+          {navState === "Dashboard" ? (
+            <div>Dash board</div>
+          ) : (
+            <Analytics setisQuizmodalopen={setisQuizmodalopen} />
+          )}
         </div>
         {/* adding modals */}
         {isQuizmodalopen ? (
@@ -53,6 +61,7 @@ const Dashboard = () => {
         ) : (
           ""
         )}
+        {deleteModal ? <Deletemodal /> : ""}
       </div>
     </>
   );

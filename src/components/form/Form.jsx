@@ -55,7 +55,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
         if (inputType === "imgtext") {
           updatedOptions[idx] = { ...currentOption, text: e.target.value };
         } else {
-          updatedOptions[idx] = { ...currentOption, imgurl: e.target.value };
+          updatedOptions[idx] = { ...currentOption, imgUrl: e.target.value };
         }
         updatedSlides[curindex] = {
           ...updatedSlides[curindex],
@@ -118,7 +118,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="text"
-            defaultChecked={slide.type === "text" || !slide.type}
+            defaultChecked={slide.type === "text" }
             onChange={changeHandeler}
           />
             <label htmlFor="html">Text</label>
@@ -129,7 +129,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="imageurl"
-            defaultChecked={slide.type === "imageurl" || !slide.type}
+            defaultChecked={slide.type === "imageurl" }
             onChange={changeHandeler}
           />
             <label htmlFor="html">Image URL</label>
@@ -140,7 +140,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="text&image"
-            defaultChecked={slide.type === "text&image" || !slide.type}
+            defaultChecked={slide.type === "text&image" }
             onChange={changeHandeler}
           />
           <label htmlFor="Text & Image URL">Text & Image URL</label>
