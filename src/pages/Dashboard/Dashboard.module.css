@@ -41,3 +41,38 @@
     border-radius: 9px;
     font-size: 18px;
 }
+
+.dashboardContainer {
+    margin-top: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+.dataContainer {
+    height: 8rem;
+    width: 56rem;
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+.dataDiv{
+    height: 7.5rem;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: 600;
+    padding: 25px;
+    box-sizing: border-box;
+    letter-spacing: 3px;
+    width: 16rem;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+}
+.trendingQuize {}
+.dataNumber{
+font-size: 2.5rem;
+}

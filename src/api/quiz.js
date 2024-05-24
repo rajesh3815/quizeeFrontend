@@ -16,6 +16,7 @@ export const createQuize = async ({ quizeName, quizeType }, timer, slides) => {
     return res.data;
   } catch (error) {
     console.log(error);
+    return 400;
   }
 };
 
@@ -74,3 +75,32 @@ export const deleteQuize = async (id) => {
     console.log(error);
   }
 };
+//getting the details of the quize
+export const getQuizDetailbyid = async (id) => {
+  console.log(id);
+  try {
+    const res = await axios.get(
+      `${staticUrl}/api/v1/quize/getQuizeDetailbyid/${id}`
+    );
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//getting the datas of qiuzes for designing dashboard component
+export const getDataQuize = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    axios.defaults.headers.common["Authorization"] = token;
+    const res = await axios.get(
+      `${staticUrl}/api/v1/quize/getAllquizeData`
+    );
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

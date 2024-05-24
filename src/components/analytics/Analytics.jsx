@@ -48,6 +48,16 @@ const Analytics = ({ setisQuizmodalopen }) => {
     setdeleteId(id);
     setdeleteModal(true);
   };
+  const shareHandeler=async(id)=>{
+    const baseUrl = `${window.location.protocol}//${window.location.host}/quiz/${id}`;
+    try {
+      await navigator.clipboard.writeText(baseUrl)
+      alert("copied")
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
   return (
     <>
       <div className={Style.container}>
@@ -74,7 +84,7 @@ const Analytics = ({ setisQuizmodalopen }) => {
                 <div className={Style.quizFunc}>
                   <span onClick={() => updateHandeler(data._id)}>up</span>
                   <span onClick={() => deleteHandeler(data._id)}>del</span>
-                  <span>sh</span>
+                  <span onClick={()=>shareHandeler(data._id)}>sh</span>
                 </div>
                 <span>Question Wise Analysis</span>
               </div>

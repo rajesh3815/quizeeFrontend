@@ -1,14 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Style from "./Dashboard.module.css";
 import Quizmodal from "../../components/quizpopup/Quizmodal";
 import Analytics from "../../components/analytics/Analytics";
 import { quizContext } from "../../Quizcontext";
 import Deletemodal from "../../components/deletemodal/Deletemodal";
+import Successmodal from "../../components/successmodal/Successmodal";
+import { getDataQuize } from "../../api/quiz";
 const Dashboard = () => {
   const [toggle, setToggle] = useState();
   const [isQuizmodalopen, setisQuizmodalopen] = useState(false);
   const [navState, setnavState] = useState("Dashboard");
-  const { deleteModal} =
+  const [dashBordData, setDashboardData] = useState({});
+  const { deleteModal, successModal, setSuccessModal } =
     useContext(quizContext);
   const quizClickhandeler = () => {
     setisQuizmodalopen(true);
@@ -18,6 +21,16 @@ const Dashboard = () => {
   };
   const analyticsHandeler = () => {
     setnavState("Analytics");
+  };
+  useEffect(() => {
+    getDashboardData();
+  }, []);
+  //setting up the dashboard data
+  const getDashboardData = async () => {
+    const res = await getDataQuize();
+    setDashboardData(res);
+    // console.log(dashBordData);
+    // console.log(res);
   };
   return (
     <>
@@ -47,7 +60,45 @@ const Dashboard = () => {
         </div>
         <div className={Style.contenet}>
           {navState === "Dashboard" ? (
-            <div>Dash board</div>
+            <div className={Style.dashboardContainer}>
+              <div className={Style.dataContainer}>
+                <div
+                  className={Style.dataDiv}
+                  style={{ color: "rgba(255, 93, 1, 1)" }}
+                >
+                  <span className={Style.dataNumber}>
+                    {dashBordData?.toalQuizeno ? dashBordData?.toalQuizeno : 0}
+                  </span>{" "}
+                  Quiz Created
+                </div>
+                <div
+                  className={Style.dataDiv}
+                  style={{ color: "rgba(96, 184, 75, 1)" }}
+                >
+                  <span className={Style.dataNumber}>
+                    {dashBordData?.totalQustions
+                      ? dashBordData?.totalQustions
+                      : 0}
+                  </span>{" "}
+                  questions created
+                </div>
+                <div
+                  className={Style.dataDiv}
+                  style={{ color: "rgba(80, 118, 255, 1)" }}
+                >
+                  <span className={Style.dataNumber}>
+                    {dashBordData?.totalImpression
+                      ? dashBordData?.totalImpression
+                      : 0}
+                  </span>{" "}
+                  total impressions
+                </div>
+              </div>
+              <div className={Style.trendingQuize}>
+                <h1>Trending Quizs</h1>
+                <div>contain trending Quiz</div>
+              </div>
+            </div>
           ) : (
             <Analytics setisQuizmodalopen={setisQuizmodalopen} />
           )}
@@ -61,7 +112,10 @@ const Dashboard = () => {
         ) : (
           ""
         )}
+        {/* adding delete modal */}
         {deleteModal ? <Deletemodal /> : ""}
+        {/* adding success modal if quize created */}
+        {successModal ? <Successmodal /> : ""}
       </div>
     </>
   );

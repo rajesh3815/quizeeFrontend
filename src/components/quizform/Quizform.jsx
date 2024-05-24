@@ -7,8 +7,16 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   const [slides, setSlides] = useState([
     { question: "", type: "text", options: ["", ""], answer: "" },
   ]);
-  const { updateData, setIsedit, isedit, updateTimer } =
-    useContext(quizContext);
+  const {
+    updateData,
+    setIsedit,
+    isedit,
+    updateTimer,
+    setisOpen,
+    successModal,
+    setSuccessModal,
+    setDocumentId,
+  } = useContext(quizContext);
 
   const [timer, setTimer] = useState();
   const [timerIndex, setTimerIndex] = useState(0);
@@ -29,13 +37,17 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       return;
     }
   }, [updateData]);
-  useEffect(()=>{
 
-  },[])
+  //setting up the current index
+
+  useEffect(() => {
+    setCurindex(slides?.length - 1);
+  }, [slides?.length]);
+
   const editQuizhandel = async () => {
     const id = updateData._id;
     const res = await editQuiz(id, slides, timer);
-    
+
     console.log(res);
   };
   const timerHandeler = (idx, time) => {
@@ -67,8 +79,10 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       setSlides((prev) => {
         const updatedSlide = [...prev];
         updatedSlide.splice(idx, 1);
+        console.log(updatedSlide);
         return updatedSlide;
       });
+
       setCurindex(0);
     } else {
       return;
@@ -78,9 +92,10 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   const cancelModalhandler = () => {
     setisQuizmodalopen(false);
     setIsedit(false);
+    setisOpen(true);
   };
-  const createQuizehandle = () => {
-    if (timer === "") {
+  const createQuizehandle = async () => {
+    if (!timer) {
       setErr("timer Field is required");
       return;
     }
@@ -91,8 +106,15 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       }
     }
     setErr("");
+    const res = await createQuize(quizeDetail, timer, slides);
 
-    createQuize(quizeDetail, timer, slides);
+    if (res === 400) {
+      console.log(res);
+      return;
+    }
+    setSuccessModal(true);
+    setisQuizmodalopen(false);
+    setDocumentId(res.documentId);
   };
   // lll
 
@@ -102,22 +124,23 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         {slides?.map((_, index) => (
           <React.Fragment key={index + 6}>
             <div
+              style={{ border: index === curindex ? "1px solid gray" : "" }}
               onClick={() => setCurindex(index)}
               key={index}
               className={Style.chip}
             >
               {index}
+              {index >= 1 ? (
+                <span
+                  onClick={() => deletHandeler(index)}
+                  className={Style.crossButton}
+                >
+                  x
+                </span>
+              ) : (
+                ""
+              )}
             </div>
-            {index >= 1 ? (
-              <span
-                onClick={() => deletHandeler(index)}
-                className={Style.crossButton}
-              >
-                x
-              </span>
-            ) : (
-              ""
-            )}
           </React.Fragment>
         ))}
         <div

@@ -24,6 +24,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .timerDiv {
@@ -47,7 +48,13 @@
     cursor: pointer;
 }
 
-.crossButton {}
+.crossButton {
+    position: absolute;
+    color: black;
+    font-size: 17px;
+    top: -4px;
+    right: -2px;
+}
 
 .footerButton {
     position: absolute;

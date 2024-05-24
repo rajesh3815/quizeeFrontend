@@ -9,6 +9,8 @@ export const ContextProvider = ({ children }) => {
   const [updateTimer, setUpdateTimer] = useState("off");
   const [deleteId, setdeleteId] = useState();
   const [deleteModal, setdeleteModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(true);
+  const [documentId, setDocumentId] = useState();
   return (
     <>
       <quizContext.Provider
@@ -25,6 +27,10 @@ export const ContextProvider = ({ children }) => {
           setdeleteId,
           deleteModal,
           setdeleteModal,
+          successModal,
+          setSuccessModal,
+          documentId,
+          setDocumentId,
         }}
       >
         {children}
