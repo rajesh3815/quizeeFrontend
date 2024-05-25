@@ -6,16 +6,22 @@ import winner from "../../assets/winner.png";
 const Quize = () => {
   const [quizDetail, setQuizDetail] = useState({});
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectOption, setSelectoption] = useState();
+  const [selectOption, setSelectoption] = useState(null);
   const [isQuizcompleted, setIsQuizcompleted] = useState(false);
+  const [totalAns, setTotalAns] = useState(0);
+  const [ansArray, setAnsArray] = useState([]);
   const { id } = useParams();
   useEffect(() => {
     getDetailsquize();
   }, []);
-
+  useEffect(() => {
+    console.log(totalAns);
+  }, [selectOption]);
   const getDetailsquize = async () => {
     const res = await getQuizDetailbyid(id);
     setQuizDetail(res.quiz);
+    setAnsArray(Array(res?.quiz?.slides?.length).fill("null"));
+    console.log(ansArray, quizDetail?.slides?.length);
     console.log(res);
     console.log(quizDetail.slides);
   };
@@ -25,9 +31,35 @@ const Quize = () => {
       setCurrentSlide((prev) => prev + 1);
       console.log(currentSlide);
     }
+    setSelectoption(null);
   };
   const optionClick = (index) => {
     setSelectoption(index);
+    const ans = Number(quizDetail?.slides[currentSlide]?.answer);
+    if (ansArray[currentSlide] !== "null" && ansArray[currentSlide] === index) {
+      console.log(ansArray);
+      return;
+    }
+    if (ansArray[currentSlide] !== "null" && ansArray[currentSlide] !== index) {
+      console.log("ins");
+      setTotalAns((prev) => prev - 1);
+      setAnsArray((prev) => {
+        const upd = [...prev];
+        upd[currentSlide] = "null";
+        return upd;
+      });
+      return;
+    }
+    if (ans === index) {
+      setTotalAns((prev) => prev + 1);
+      setAnsArray((prev) => {
+        const upd = [...prev];
+        console.log(upd);
+        upd[currentSlide] = index;
+        return upd;
+      });
+      console.log(ansArray, "form a");
+    }
   };
   const submitHandeler = () => {
     setIsQuizcompleted(true);
@@ -40,7 +72,7 @@ const Quize = () => {
           <h1>Congrats Quiz is completed</h1>
           <img className={Style.winImg} src={winner} alt="" />
           <p>
-            Your score is <span style={{ color: "green" }}>03/04</span>
+            Your score is <span style={{ color: "green" }}>{`0${totalAns}`}/{`0${quizDetail?.slides?.length}`}</span>
           </p>
         </div>
       ) : (
