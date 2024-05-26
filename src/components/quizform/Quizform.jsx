@@ -18,7 +18,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     setDocumentId,
   } = useContext(quizContext);
 
-  const [timer, setTimer] = useState();
+  const [timer, setTimer] = useState("off");
   const [timerIndex, setTimerIndex] = useState(0);
   const [curindex, setCurindex] = useState(0);
   const [err, setErr] = useState();
@@ -29,8 +29,10 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       setQuizedetail((prev) => ({ ...prev, quizeType: updateData.quizeType }));
       if (updateTimer === "5sec") {
         setTimerIndex(1);
-      } else {
+      } else if (updateTimer === "10sec") {
         setTimerIndex(2);
+      } else {
+        setTimerIndex(0);
       }
       setTimer(updateTimer);
     } else {
@@ -55,7 +57,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     if (time !== "") {
       setTimer(() => time);
     } else {
-      setTimer("");
+      setTimer("off");
     }
   };
   const addSlidehandeler = () => {
@@ -95,10 +97,11 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     setisOpen(true);
   };
   const createQuizehandle = async () => {
-    if (!timer) {
-      setErr("timer Field is required");
-      return;
-    }
+    // if (!timer) {
+    //   setErr("timer Field is required");
+    //   return;
+    // }
+    console.log(timer, "thhh ee dd");
     for (let i = 0; i < slides.length; i++) {
       if (slides[i].question === "") {
         setErr("All quize fields are required");
@@ -165,36 +168,38 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       ))}
 
       {/* timer div */}
-      <div className={Style.timerDiv}>
-        <p>Timer</p>
-        <span
-          style={{
-            backgroundColor: timerIndex === 0 ? "red" : "",
-            color: timerIndex === 0 ? "white" : "rgba(159, 159, 159, 1)",
-          }}
-          onClick={() => timerHandeler(0, "")}
-        >
-          off
-        </span>
-        <span
-          style={{
-            backgroundColor: timerIndex === 1 ? "red" : "",
-            color: timerIndex === 1 ? "white" : "rgba(159, 159, 159, 1)",
-          }}
-          onClick={() => timerHandeler(1, "5sec")}
-        >
-          5sec
-        </span>
-        <span
-          style={{
-            backgroundColor: timerIndex === 2 ? "red" : "",
-            color: timerIndex === 2 ? "white" : "rgba(159, 159, 159, 1)",
-          }}
-          onClick={() => timerHandeler(2, "10sec")}
-        >
-          10sec
-        </span>
-      </div>
+      {quizeDetail?.quizeType === "Q&A" && (
+        <div className={Style.timerDiv}>
+          <p>Timer</p>
+          <span
+            style={{
+              backgroundColor: timerIndex === 0 ? "red" : "",
+              color: timerIndex === 0 ? "white" : "rgba(159, 159, 159, 1)",
+            }}
+            onClick={() => timerHandeler(0, "")}
+          >
+            off
+          </span>
+          <span
+            style={{
+              backgroundColor: timerIndex === 1 ? "red" : "",
+              color: timerIndex === 1 ? "white" : "rgba(159, 159, 159, 1)",
+            }}
+            onClick={() => timerHandeler(1, "5sec")}
+          >
+            5sec
+          </span>
+          <span
+            style={{
+              backgroundColor: timerIndex === 2 ? "red" : "",
+              color: timerIndex === 2 ? "white" : "rgba(159, 159, 159, 1)",
+            }}
+            onClick={() => timerHandeler(2, "10sec")}
+          >
+            10sec
+          </span>
+        </div>
+      )}
 
       {/* creating cancel and submit button  */}
 

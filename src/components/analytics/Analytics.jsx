@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import Style from "./Analytics.module.css";
 import { getAllquizes, getQuizbyid } from "../../api/quiz";
 import { quizContext } from "../../Quizcontext";
-
+import edImg from "../../assets/edit.svg";
+import delImg from "../../assets/delete.svg";
+import shImg from "../../assets/share.svg";
 const Analytics = ({ setisQuizmodalopen }) => {
   const [allquzizedata, setAllquizedata] = useState([]);
 
@@ -48,16 +50,15 @@ const Analytics = ({ setisQuizmodalopen }) => {
     setdeleteId(id);
     setdeleteModal(true);
   };
-  const shareHandeler=async(id)=>{
+  const shareHandeler = async (id) => {
     const baseUrl = `${window.location.protocol}//${window.location.host}/quiz/${id}`;
     try {
-      await navigator.clipboard.writeText(baseUrl)
-      alert("copied")
+      await navigator.clipboard.writeText(baseUrl);
+      alert("copied");
     } catch (error) {
       console.log(error);
     }
-    
-  }
+  };
   return (
     <>
       <div className={Style.container}>
@@ -78,13 +79,19 @@ const Analytics = ({ setisQuizmodalopen }) => {
                 className={Style.quizeDetail}
               >
                 <span>{index + 1}</span>
-                <span>{data.quizeName}</span>
+                <span style={{ width: "1.5rem" }}>{data.quizeName}</span>
                 <span>{data.dateCreated}</span>
                 <span>{data.impressionCount}</span>
                 <div className={Style.quizFunc}>
-                  <span onClick={() => updateHandeler(data._id)}>up</span>
-                  <span onClick={() => deleteHandeler(data._id)}>del</span>
-                  <span onClick={()=>shareHandeler(data._id)}>sh</span>
+                  <span onClick={() => updateHandeler(data._id)}>
+                    <img src={edImg} />
+                  </span>
+                  <span onClick={() => deleteHandeler(data._id)}>
+                    <img src={delImg} />
+                  </span>
+                  <span onClick={() => shareHandeler(data._id)}>
+                    <img src={shImg} />
+                  </span>
                 </div>
                 <span>Question Wise Analysis</span>
               </div>

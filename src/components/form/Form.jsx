@@ -1,5 +1,6 @@
 import React from "react";
 import Style from "./Form.module.css";
+import delImg from "../../assets/delete.svg";
 const Form = ({ slide, setSlides, curindex, quizeType }) => {
   const addOptionHandle = () => {
     console.log(slide);
@@ -118,7 +119,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="text"
-            defaultChecked={slide.type === "text" }
+            defaultChecked={slide.type === "text"}
             onChange={changeHandeler}
           />
             <label htmlFor="html">Text</label>
@@ -129,7 +130,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="imageurl"
-            defaultChecked={slide.type === "imageurl" }
+            defaultChecked={slide.type === "imageurl"}
             onChange={changeHandeler}
           />
             <label htmlFor="html">Image URL</label>
@@ -140,7 +141,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="text&image"
-            defaultChecked={slide.type === "text&image" }
+            defaultChecked={slide.type === "text&image"}
             onChange={changeHandeler}
           />
           <label htmlFor="Text & Image URL">Text & Image URL</label>
@@ -188,7 +189,13 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
                     )}
                   </label>
                   {slide?.options.length > 2 && (
-                    <button onClick={() => deleteHandler(index)}>del</button>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => deleteHandler(index)}
+                    >
+                      {" "}
+                      <img src={delImg} alt="" />{" "}
+                    </span>
                   )}
                 </div>
               );
@@ -220,7 +227,9 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
                     />
                   )}
                   {slide?.options.length > 2 && (
-                    <button onClick={() => deleteHandler(index)}>del</button>
+                    <span onClick={() => deleteHandler(index)}>
+                      <img src={delImg} alt="" />
+                    </span>
                   )}
                 </div>
               );

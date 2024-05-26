@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Style from "./Quize.module.css";
 import { useParams } from "react-router-dom";
 import { getQuizDetailbyid, setImpressions } from "../../api/quiz";
@@ -10,18 +10,55 @@ const Quize = () => {
   const [isQuizcompleted, setIsQuizcompleted] = useState(false);
   const [totalAns, setTotalAns] = useState(0);
   const [ansArray, setAnsArray] = useState([]);
-
+  const [countTimer, setCountTimer] = useState(null);
   const { id } = useParams();
+  const timerId = useRef();
   useEffect(() => {
     getDetailsquize();
   }, []);
+  //setting up quiz id for immpressions
   useEffect(() => {
-    console.log("dkjvmfkdvjfdnkfdvkdfj");
     if (quizDetail?._id) setImpressions(quizDetail?._id);
   }, [quizDetail]);
+
+  //setting of timer
+  useEffect(() => {
+    if (quizDetail?.timer === "off") return;
+    if (quizDetail?.timer) {
+      if (quizDetail?.timer === "5sec") {
+        setCountTimer(5);
+      } else if (quizDetail?.timer === "10sec") {
+        setCountTimer(10);
+      } else {
+        setCountTimer(0);
+      }
+    }
+    console.log("hy");
+    timerId.current = setInterval(() => {
+      setCountTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timerId.current);
+  }, [quizDetail, currentSlide]);
+  //handelling for if timer gets zero
+  useEffect(() => {
+    if (quizDetail?.timer === "off") return;
+    if (countTimer === 0 || countTimer < 0) {
+      clearInterval(timerId.current);
+      if (currentSlide < quizDetail?.slides?.length - 1) {
+        setCurrentSlide((prev) => prev + 1);
+        setSelectoption(null);
+        console.log(currentSlide);
+      }
+      if (countTimer === 0 && currentSlide === quizDetail?.slides?.length - 1) {
+        submitHandeler();
+      }
+    }
+  }, [countTimer]);
+
   useEffect(() => {
     console.log(totalAns);
   }, [selectOption]);
+
   const getDetailsquize = async () => {
     const res = await getQuizDetailbyid(id);
     setQuizDetail(res.quiz);
@@ -31,6 +68,7 @@ const Quize = () => {
     //set impressions
     console.log(res?.quiz?._id);
   };
+
   const nextHandeler = () => {
     console.log(currentSlide);
     if (currentSlide < quizDetail?.slides?.length - 1) {
@@ -39,8 +77,13 @@ const Quize = () => {
     }
     setSelectoption(null);
   };
+
   const optionClick = (index) => {
     setSelectoption(index);
+    //Aborting if quize is a polltype
+    if (quizDetail?.quizeType !== "Q&A") {
+      return;
+    }
     const ans = Number(quizDetail?.slides[currentSlide]?.answer);
     if (ansArray[currentSlide] !== "null" && ansArray[currentSlide] === index) {
       console.log(ansArray);
@@ -67,6 +110,7 @@ const Quize = () => {
       console.log(ansArray, "form a");
     }
   };
+
   const submitHandeler = () => {
     setIsQuizcompleted(true);
   };
@@ -75,14 +119,24 @@ const Quize = () => {
     <div className={Style.mainContainer}>
       {isQuizcompleted ? (
         <div className={Style.successContainer}>
-          <h1>Congrats Quiz is completed</h1>
-          <img className={Style.winImg} src={winner} alt="" />
-          <p>
-            Your score is{" "}
-            <span style={{ color: "green" }}>
-              {`0${totalAns}`}/{`0${quizDetail?.slides?.length}`}
-            </span>
-          </p>
+          {quizDetail?.quizeType !== "Q&A" ? (
+            <div className={Style.pollDiv} >
+              <span className={Style.pollSuccess}>
+                Thank you for participating in the Poll
+              </span>
+            </div>
+          ) : (
+            <>
+              <h1>Congrats Quiz is completed</h1>
+              <img className={Style.winImg} src={winner} alt="" />
+              <p>
+                Your score is{" "}
+                <span style={{ color: "green" }}>
+                  {`0${totalAns}`}/{`0${quizDetail?.slides?.length}`}
+                </span>
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <div className={Style.container}>
@@ -98,6 +152,7 @@ const Quize = () => {
                   </span>
 
                   <div className={Style.quizes}>
+                    <span className={Style.countDown}>{countTimer}</span>
                     <p>{quizslide?.question}</p>
                     <div className={Style.optionDiv}>
                       {quizslide?.type === "imageurl" && (
