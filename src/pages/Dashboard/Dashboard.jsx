@@ -5,12 +5,14 @@ import Analytics from "../../components/analytics/Analytics";
 import { quizContext } from "../../Quizcontext";
 import Deletemodal from "../../components/deletemodal/Deletemodal";
 import Successmodal from "../../components/successmodal/Successmodal";
-import { getDataQuize } from "../../api/quiz";
+import { getDataQuize, getTrendings } from "../../api/quiz";
+import { IoEyeOutline } from "react-icons/io5";
 const Dashboard = () => {
   const [toggle, setToggle] = useState();
   const [isQuizmodalopen, setisQuizmodalopen] = useState(false);
   const [navState, setnavState] = useState("Dashboard");
   const [dashBordData, setDashboardData] = useState({});
+  const [trendingData, setTrendingData] = useState([]); //setting up the trendings
   const { deleteModal, successModal, setSuccessModal } =
     useContext(quizContext);
   const quizClickhandeler = () => {
@@ -29,8 +31,17 @@ const Dashboard = () => {
   const getDashboardData = async () => {
     const res = await getDataQuize();
     setDashboardData(res);
-    // console.log(dashBordData);
-    // console.log(res);
+    trendingDatasetter();
+  };
+  const trendingDatasetter = async () => {
+    const res = await getTrendings();
+    console.log(res);
+    setTrendingData(res?.trendQuiz);
+  };
+  const formatDate = (dateString) => {
+    const newDate = new Date(dateString);
+    const option = { day: "2-digit", month: "long", year: "numeric" };
+    return newDate.toLocaleDateString("en-US", option);
   };
   return (
     <>
@@ -96,7 +107,32 @@ const Dashboard = () => {
               </div>
               <div className={Style.trendingQuize}>
                 <h1>Trending Quizs</h1>
-                <div>contain trending Quiz</div>
+                <div className={Style.trendingContainer}>
+                  {trendingData?.map((trend, idx) => {
+                    return (
+                      <div className={Style.chipCard} key={idx}>
+                        <div className={Style.chipHero}>
+                          {" "}
+                          <span style={{fontWeight:"700",fontSize:"1.7rem"}}>{trend.quizeName}</span>
+                          <span
+                            style={{
+                              fontSize: "1.3rem",
+                              fontWeight: "600",
+                              color: "rgba(255, 93, 1, 1)",
+                              display:"flex",
+                              alignItems:"center"
+                            }}
+                          >
+                            {trend.impressionCount}
+                            <IoEyeOutline style={{ marginLeft: "10px" }} />
+                          </span>
+                        </div>
+
+                        <span className={Style.crreated}>created on:{formatDate(trend.dateCreated)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           ) : (

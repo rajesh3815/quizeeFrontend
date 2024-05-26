@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Style from "./Quize.module.css";
 import { useParams } from "react-router-dom";
-import { getQuizDetailbyid } from "../../api/quiz";
+import { getQuizDetailbyid, setImpressions } from "../../api/quiz";
 import winner from "../../assets/winner.png";
 const Quize = () => {
   const [quizDetail, setQuizDetail] = useState({});
@@ -10,10 +10,15 @@ const Quize = () => {
   const [isQuizcompleted, setIsQuizcompleted] = useState(false);
   const [totalAns, setTotalAns] = useState(0);
   const [ansArray, setAnsArray] = useState([]);
+
   const { id } = useParams();
   useEffect(() => {
     getDetailsquize();
   }, []);
+  useEffect(() => {
+    console.log("dkjvmfkdvjfdnkfdvkdfj");
+    if (quizDetail?._id) setImpressions(quizDetail?._id);
+  }, [quizDetail]);
   useEffect(() => {
     console.log(totalAns);
   }, [selectOption]);
@@ -21,9 +26,10 @@ const Quize = () => {
     const res = await getQuizDetailbyid(id);
     setQuizDetail(res.quiz);
     setAnsArray(Array(res?.quiz?.slides?.length).fill("null"));
-    console.log(ansArray, quizDetail?.slides?.length);
     console.log(res);
     console.log(quizDetail.slides);
+    //set impressions
+    console.log(res?.quiz?._id);
   };
   const nextHandeler = () => {
     console.log(currentSlide);
@@ -72,7 +78,10 @@ const Quize = () => {
           <h1>Congrats Quiz is completed</h1>
           <img className={Style.winImg} src={winner} alt="" />
           <p>
-            Your score is <span style={{ color: "green" }}>{`0${totalAns}`}/{`0${quizDetail?.slides?.length}`}</span>
+            Your score is{" "}
+            <span style={{ color: "green" }}>
+              {`0${totalAns}`}/{`0${quizDetail?.slides?.length}`}
+            </span>
           </p>
         </div>
       ) : (

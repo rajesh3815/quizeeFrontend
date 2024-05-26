@@ -94,8 +94,34 @@ export const getDataQuize = async () => {
   try {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
+    const res = await axios.get(`${staticUrl}/api/v1/quize/getAllquizeData`);
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//setting up the impression counts of quizes
+
+export const setImpressions = async (id) => {
+  try {
+    const res = await axios.patch(
+      `${staticUrl}/api/v1/quize/setImpressins/${id}`
+    );
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTrendings = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    axios.defaults.headers.common["Authorization"] = token;
     const res = await axios.get(
-      `${staticUrl}/api/v1/quize/getAllquizeData`
+      `${staticUrl}/api/v1/quize/getTrendingQuize`
     );
     console.log(res.data);
     return res.data;
