@@ -5,9 +5,11 @@ import { quizContext } from "../../Quizcontext";
 import edImg from "../../assets/edit.svg";
 import delImg from "../../assets/delete.svg";
 import shImg from "../../assets/share.svg";
+import QnAnalysis from "../questionAnalysis/QnAnalysis";
 const Analytics = ({ setisQuizmodalopen }) => {
   const [allquzizedata, setAllquizedata] = useState([]);
-
+  const [isQnAnalysis, setIsQnAnalysis] = useState(false);
+  const [qnId, setQnId] = useState();
   const {
     setisOpen,
     setupdateData,
@@ -59,46 +61,60 @@ const Analytics = ({ setisQuizmodalopen }) => {
       console.log(error);
     }
   };
+  const analysisClick = (data) => {
+    setQnId(data._id);
+    setIsQnAnalysis(true);
+  };
+
   return (
     <>
-      <div className={Style.container}>
-        <h1 className={Style.heading}>Quiz Analysis</h1>
-        <div className={Style.detailContainer}>
-          <div className={Style.detailNav}>
-            <span>Sl.No</span> <span>Quiz Name</span> <span>Created on</span>{" "}
-            <span>impression</span>{" "}
-          </div>
-          {allquzizedata?.map((data, index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  background:
-                    index % 2 === 0 ? "white" : "rgba(179, 196, 255, 1)",
-                }}
-                className={Style.quizeDetail}
-              >
-                <span>{index + 1}</span>
-                <span style={{ width: "1.5rem" }}>{data.quizeName}</span>
-                <span>{data.dateCreated}</span>
-                <span>{data.impressionCount}</span>
-                <div className={Style.quizFunc}>
-                  <span onClick={() => updateHandeler(data._id)}>
-                    <img src={edImg} />
-                  </span>
-                  <span onClick={() => deleteHandeler(data._id)}>
-                    <img src={delImg} />
-                  </span>
-                  <span onClick={() => shareHandeler(data._id)}>
-                    <img src={shImg} />
+      {isQnAnalysis !== true ? (
+        <div className={Style.container}>
+          <h1 className={Style.heading}>Quiz Analysis</h1>
+          <div className={Style.detailContainer}>
+            <div className={Style.detailNav}>
+              <span>Sl.No</span> <span>Quiz Name</span> <span>Created on</span>{" "}
+              <span>impression</span>{" "}
+            </div>
+            {allquzizedata?.map((data, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    background:
+                      index % 2 === 0 ? "white" : "rgba(179, 196, 255, 1)",
+                  }}
+                  className={Style.quizeDetail}
+                >
+                  <span>{index + 1}</span>
+                  <span style={{ width: "1.5rem" }}>{data.quizeName}</span>
+                  <span>{data.dateCreated}</span>
+                  <span>{data.impressionCount}</span>
+                  <div className={Style.quizFunc}>
+                    <span onClick={() => updateHandeler(data._id)}>
+                      <img src={edImg} />
+                    </span>
+                    <span onClick={() => deleteHandeler(data._id)}>
+                      <img src={delImg} />
+                    </span>
+                    <span onClick={() => shareHandeler(data._id)}>
+                      <img src={shImg} />
+                    </span>
+                  </div>
+                  <span
+                    onClick={() => analysisClick(data)}
+                    className={Style.qnAnalysis}
+                  >
+                    <u>Question Wise Analysis</u>
                   </span>
                 </div>
-                <span>Question Wise Analysis</span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <QnAnalysis qnId={qnId} />
+      )}
     </>
   );
 };

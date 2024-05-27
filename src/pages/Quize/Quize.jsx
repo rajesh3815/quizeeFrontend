@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import Style from "./Quize.module.css";
 import { useParams } from "react-router-dom";
-import { getQuizDetailbyid, setImpressions } from "../../api/quiz";
+import {
+  getQuizDetailbyid,
+  setImpressions,
+  setupAnalytics,
+} from "../../api/quiz";
 import winner from "../../assets/winner.png";
 const Quize = () => {
   const [quizDetail, setQuizDetail] = useState({});
@@ -45,6 +49,7 @@ const Quize = () => {
     if (countTimer === 0 || countTimer < 0) {
       clearInterval(timerId.current);
       if (currentSlide < quizDetail?.slides?.length - 1) {
+        setupAnalytics(id, currentSlide, selectOption);
         setCurrentSlide((prev) => prev + 1);
         setSelectoption(null);
         console.log(currentSlide);
@@ -69,9 +74,10 @@ const Quize = () => {
     console.log(res?.quiz?._id);
   };
 
-  const nextHandeler = () => {
+  const nextHandeler = async () => {
     console.log(currentSlide);
     if (currentSlide < quizDetail?.slides?.length - 1) {
+      await setupAnalytics(id, currentSlide, selectOption);
       setCurrentSlide((prev) => prev + 1);
       console.log(currentSlide);
     }
@@ -113,6 +119,7 @@ const Quize = () => {
 
   const submitHandeler = () => {
     setIsQuizcompleted(true);
+    setupAnalytics(id, currentSlide, selectOption);
   };
   const questionDiv = () => {};
   return (
@@ -120,7 +127,7 @@ const Quize = () => {
       {isQuizcompleted ? (
         <div className={Style.successContainer}>
           {quizDetail?.quizeType !== "Q&A" ? (
-            <div className={Style.pollDiv} >
+            <div className={Style.pollDiv}>
               <span className={Style.pollSuccess}>
                 Thank you for participating in the Poll
               </span>

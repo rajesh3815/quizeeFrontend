@@ -1,8 +1,14 @@
 import axios from "axios";
 const staticUrl = "http://localhost:3000";
 
-export const createQuize = async ({ quizeName, quizeType }, timer, slides) => {
+export const createQuize = async (
+  { quizeName, quizeType },
+  timer,
+  slides,
+  quizAnalytic
+) => {
   //   console.log(quizeName, quizeType, timer, slides);
+
   try {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
@@ -11,6 +17,7 @@ export const createQuize = async ({ quizeName, quizeType }, timer, slides) => {
       quizeType,
       slides,
       timer,
+      quizAnalytic,
     });
     console.log(res.data);
     return res.data;
@@ -120,9 +127,7 @@ export const getTrendings = async (id) => {
   try {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
-    const res = await axios.get(
-      `${staticUrl}/api/v1/quize/getTrendingQuize`
-    );
+    const res = await axios.get(`${staticUrl}/api/v1/quize/getTrendingQuize`);
     console.log(res.data);
     return res.data;
   } catch (error) {
@@ -130,3 +135,16 @@ export const getTrendings = async (id) => {
   }
 };
 
+// counting the analytics
+
+export const setupAnalytics = async (id, cur, optionIdx) => {
+  try {
+    const res = await axios.put(
+      `${staticUrl}/api/v1/quize/setAnalytics/${id}`,
+      { cur, optionIdx }
+    );
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -97,19 +97,31 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     setisOpen(true);
   };
   const createQuizehandle = async () => {
-    // if (!timer) {
-    //   setErr("timer Field is required");
-    //   return;
-    // }
     console.log(timer, "thhh ee dd");
     for (let i = 0; i < slides.length; i++) {
       if (slides[i].question === "") {
         setErr("All quize fields are required");
         return;
       }
+      if (quizeDetail?.quizeType === "Q&A" && slides[i].answer === "") {
+        setErr("Answer fields are required");
+        return;
+      }
     }
     setErr("");
-    const res = await createQuize(quizeDetail, timer, slides);
+    //setting up analytics
+    let quizAnalytic = [];
+    if (quizeDetail?.quizeType === "Q&A") {
+      quizAnalytic = slides?.map(() => ({ attempts: 0, correctAnswer: 0 }));
+    } else {
+      quizAnalytic = slides?.map((slide) => ({
+        options: slide?.options?.map(() => ({ count: 0 })),
+      }));
+    }
+       console.log(quizAnalytic);
+    //---------------------
+
+    const res = await createQuize(quizeDetail, timer, slides, quizAnalytic);
 
     if (res === 400) {
       console.log(res);
