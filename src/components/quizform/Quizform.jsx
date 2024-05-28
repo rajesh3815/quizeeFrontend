@@ -118,7 +118,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         options: slide?.options?.map(() => ({ count: 0 })),
       }));
     }
-       console.log(quizAnalytic);
+    console.log(quizAnalytic);
     //---------------------
 
     const res = await createQuize(quizeDetail, timer, slides, quizAnalytic);
@@ -239,7 +239,20 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
           </button>
         )}
       </div>
-      {err ? <span style={{ color: "red" }}>{err}</span> : ""}
+      {err ? (
+        <span
+          style={{
+            color: "red",
+            position: "absolute",
+            bottom: "5px",
+            right: "36%",
+          }}
+        >
+          {err}
+        </span>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

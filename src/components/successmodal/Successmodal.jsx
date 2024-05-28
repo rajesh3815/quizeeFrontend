@@ -4,7 +4,15 @@ import { quizContext } from "../../Quizcontext";
 const Successmodal = () => {
   const { setSuccessModal, setisOpen, documentId } = useContext(quizContext);
   const [inputVlaue, setInputValue] = useState();
-  const shareClick = () => {};
+  const shareClick = async () => {
+    try {
+      await navigator.clipboard.writeText(inputVlaue);
+      alert("copied");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const cancelHandeler = () => {
     setSuccessModal(false);
     setisOpen(true);

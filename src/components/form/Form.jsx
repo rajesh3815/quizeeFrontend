@@ -34,6 +34,9 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
     setSlides((prev) => {
       const updatedSlides = [...prev];
       let updatedOptions = [...updatedSlides[curindex].options];
+      if (idx === slide?.answer) {
+        updatedSlides[curindex].answer = "";
+      }
       if (updatedOptions.length > 2) {
         updatedOptions.splice(idx, 1);
       } else {
@@ -104,11 +107,13 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
   return (
     <div className={Style.container}>
       <input
+        className={Style.inputsQn}
         type="text"
         name="question"
         id=""
         value={slide.question}
         onChange={questionHandeler}
+        placeholder={quizeType === "Q&A" ? "Q&A Question" : "Poll Question"}
       />
 
       <div className={Style.radioContainer}>
@@ -153,12 +158,13 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
           <>
             {slide?.options?.map((option, index) => {
               return (
-                <div key={index}>
+                <div className={Style.optDiv} key={index}>
                   <input
                     type="radio"
                     id="option"
                     name="options"
-                    value={option}
+                    value={slide?.answer}
+                    defaultChecked={slide?.answer === index}
                     onChange={() => answerChangehandle(index)}
                   />
                    {" "}
@@ -166,25 +172,65 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
                     {slide.type === "text&image" ? (
                       <>
                         <input
+                          className={`${Style.inputOpt} ${
+                            slide?.answer === index && Style.customHolder
+                          }`}
+                          style={{
+                            color: slide?.answer === index ? "white" : "",
+                            marginRight: "8px",
+                            background:
+                              slide?.answer === index
+                                ? "rgba(96, 184, 75, 1)"
+                                : "",
+                          }}
                           type="text"
                           value={slide.options[index].text}
                           onChange={(e) =>
                             inputChangehandle(index, e, "imgtext")
                           }
+                          placeholder="Text"
                         />
                         <input
+                          style={{
+                            color: slide?.answer === index ? "white" : "",
+                            background:
+                              slide?.answer === index
+                                ? "rgba(96, 184, 75, 1)"
+                                : "",
+                          }}
+                          className={`${Style.inputOpt} ${
+                            slide?.answer === index && Style.customHolder
+                          }`}
                           type="text"
                           value={slide.options[index].imgUrl}
                           onChange={(e) =>
                             inputChangehandle(index, e, "imgurl")
                           }
+                          placeholder="ImageURL"
                         />
                       </>
                     ) : (
                       <input
+                        style={{
+                          color: slide?.answer === index ? "white" : "",
+                          background:
+                            slide?.answer === index
+                              ? "rgba(96, 184, 75, 1)"
+                              : "",
+                        }}
+                        className={`${Style.inputOpt} ${
+                          slide?.answer === index && Style.customHolder
+                        }`}
                         type="text"
                         value={slide.options[index]}
                         onChange={(e) => inputChangehandle(index, e, "text")}
+                        placeholder={
+                          slide.type === "text"
+                            ? "Text"
+                            : slide.type === "imageurl"
+                            ? "ImageURL"
+                            : ""
+                        }
                       />
                     )}
                   </label>
@@ -205,29 +251,44 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
           <>
             {slide?.options?.map((option, index) => {
               return (
-                <div key={index}>
+                <div className={Style.optDiv} key={index}>
                   {slide.type === "text&image" ? (
                     <>
                       <input
+                        className={Style.inputOpt}
+                        style={{
+                          marginRight: "8px",
+                        }}
                         type="text"
                         value={slide.options[index].text}
                         onChange={(e) => inputChangehandle(index, e, "imgtext")}
+                        placeholder="Text"
                       />
                       <input
+                        className={Style.inputOpt}
                         type="text"
                         value={slide.options[index].imgUrl}
                         onChange={(e) => inputChangehandle(index, e, "imgurl")}
+                        placeholder="Image URL"
                       />
                     </>
                   ) : (
                     <input
+                      className={Style.inputOpt}
                       type="text"
                       value={slide.options[index]}
                       onChange={(e) => inputChangehandle(index, e, "text")}
+                      placeholder={
+                        slide.type === "text"
+                          ? "Text"
+                          : slide.type === "imageurl"
+                          ? "ImageURL"
+                          : ""
+                      }
                     />
                   )}
                   {slide?.options.length > 2 && (
-                    <span onClick={() => deleteHandler(index)}>
+                    <span style={{cursor:"pointer"}} onClick={() => deleteHandler(index)}>
                       <img src={delImg} alt="" />
                     </span>
                   )}
@@ -236,7 +297,11 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             })}
           </>
         )}
-        <span onClick={addOptionHandle}>Add Option</span>
+        {slide?.options.length < 4 ? (
+          <span style={{cursor:"pointer"}} onClick={addOptionHandle}>Add Option</span>
+        ) : (
+          ""
+        )}
       </div>
 
       <div></div>

@@ -9,7 +9,7 @@ export const ContextProvider = ({ children }) => {
   const [updateTimer, setUpdateTimer] = useState("off");
   const [deleteId, setdeleteId] = useState();
   const [deleteModal, setdeleteModal] = useState(false);
-  const [successModal, setSuccessModal] = useState(true);
+  const [successModal, setSuccessModal] = useState(false);
   const [documentId, setDocumentId] = useState();
   return (
     <>

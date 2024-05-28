@@ -17,50 +17,86 @@ const QnAnalysis = ({ qnId }) => {
   };
   return (
     <div className={Style.container}>
-      {questionData?.quizeType === "Q&A" ? (
-        <div className={Style.QAcontainer}>
-          <div className={Style.hero}>
+      <div className={Style.QAcontainer}>
+        <div className={Style.hero}>
+          {" "}
+          <p>{questionData?.quizeName} Question Analysis</p>{" "}
+          <div className={Style.dateDiv}>
             {" "}
-            <p>{questionData?.quizeName} Question Analysis</p>{" "}
-            <div className={Style.dateDiv}>
-              {" "}
-              <span>
-                Created on : {formatDate(questionData?.dateCreated)}
-              </span>{" "}
-              <span>Impressions : {questionData?.impressionCount}</span>
-            </div>
+            <span>
+              Created on : {formatDate(questionData?.dateCreated)}
+            </span>{" "}
+            <span>Impressions : {questionData?.impressionCount}</span>
           </div>
+        </div>
 
-          {questionData?.slides?.map((slide, index) => {
-            return (
-              <div className={Style.qnchip}>
-                <p>
-                  <span>Q.{index + 1} </span>
-                  {slide?.question} ?
-                </p>
+        {questionData?.slides?.map((slide, index) => {
+          return (
+            <div className={Style.qnchip}>
+              <p>
+                <span>Q.{index + 1} </span>
+                {slide?.question} ?
+              </p>
+              {questionData?.quizeType === "Q&A" ? (
                 <div className={Style.analysis}>
                   <div className={Style.Qncard}>
-                    {questionData?.analytics[index]?.attempts}{" "}
-                    <span>people Attempted the question</span>
+                    <span style={{ fontSize: "2rem", fontWeight: "600" }}>
+                      {questionData?.analytics[index]?.attempts}{" "}
+                    </span>
+
+                    <span style={{ fontWeight: "500" }}>
+                      people Attempted the question
+                    </span>
                   </div>
                   <div className={Style.Qncard}>
-                    {questionData?.analytics[index]?.correctAnswer}{" "}
-                    <span>people Answered Correctly</span>
+                    <span style={{ fontSize: "2rem", fontWeight: "600" }}>
+                      {questionData?.analytics[index]?.correctAnswer}{" "}
+                    </span>
+
+                    <span style={{ fontWeight: "500" }}>
+                      people Answered Correctly
+                    </span>
                   </div>
                   <div className={Style.Qncard}>
-                    {questionData?.analytics[index]?.attempts -
-                      questionData?.analytics[index]?.correctAnswer}
-                    <span>people Answered Incorrectly</span>
+                    <span style={{ fontSize: "2rem", fontWeight: "600" }}>
+                      {questionData?.analytics[index]?.attempts -
+                        questionData?.analytics[index]?.correctAnswer}
+                    </span>
+
+                    <span style={{ fontWeight: "500" }}>
+                      people Answered Incorrectly
+                    </span>
                   </div>
                 </div>
-                <hr style={{ color: "rgba(215, 215, 215, 1)", border:"1.5px solid" }} />
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        ""
-      )}
+              ) : (
+                <div className={Style.analysis}>
+                  {questionData?.analytics[index]?.options?.map(
+                    (option, idx) => {
+                      return (
+                        <div className={Style.pollCard}>
+                          <span
+                            style={{ fontSize: "2rem", marginRight: "7px" }}
+                          >
+                            {option?.count}
+                          </span>{" "}
+                          option{idx + 1}
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              )}
+
+              <hr
+                style={{
+                  color: "rgba(215, 215, 215, 1)",
+                  border: "1.5px solid",
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -63,8 +63,16 @@ const Quizmodal = ({ isQuizmodalopen, setisQuizmodalopen }) => {
             </button>
           </div>
           <div className={Style.cancelCont}>
-            <button onClick={cancelclick}>cancel</button>
-            <button onClick={continueClick}>continue</button>
+            <button className={Style.btnChip} onClick={cancelclick}>
+              cancel
+            </button>
+            <button
+              style={{ background: "rgba(96, 184, 75, 1)", color: "white" }}
+              className={Style.btnChip}
+              onClick={continueClick}
+            >
+              continue
+            </button>
           </div>
           {err ? <span style={{ color: "red" }}>{err}</span> : ""}
         </div>
