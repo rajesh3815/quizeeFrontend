@@ -3,6 +3,8 @@ import Style from "./Quizform.module.css";
 import Form from "../form/Form";
 import { createQuize, editQuiz } from "../../api/quiz";
 import { quizContext } from "../../Quizcontext";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   const [slides, setSlides] = useState([
     { question: "", type: "text", options: ["", ""], answer: "" },
@@ -16,6 +18,8 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     successModal,
     setSuccessModal,
     setDocumentId,
+    editDetect,
+    setEditDetect,
   } = useContext(quizContext);
 
   const [timer, setTimer] = useState("off");
@@ -48,8 +52,52 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
 
   const editQuizhandel = async () => {
     const id = updateData._id;
+    for (let i = 0; i < slides.length; i++) {
+      if (slides[i].question === "") {
+        setErr("All quize fields are required");
+        return;
+      }
+      if (quizeDetail?.quizeType === "Q&A" && slides[i].answer === "") {
+        setErr("Answer fields are required");
+        return;
+      }
+      if (slides[i]?.type !== "text&image") {
+        for (let j = 0; j < slides[i]?.options?.length; j++) {
+          if (slides[i]?.options[j] === "") {
+            setErr("All option field required");
+            return;
+          }
+        }
+      } else {
+        for (let j = 0; j < slides[i]?.options?.length; j++) {
+          console.log(slides[i]?.options[j]);
+          if (
+            slides[i]?.options[j]?.text === "" ||
+            slides[i]?.options[j]?.imgUrl === "" ||
+            slides[i]?.options[j] === "" ||
+            Object.keys(slides[i]?.options[j])?.length < 2
+          ) {
+            console.log(slides[i]?.options[j]);
+            setErr("All option field of img&url required");
+            return;
+          }
+        }
+      }
+    }
+    setErr("");
     const res = await editQuiz(id, slides, timer);
-
+    toast.success("Quiz edited Successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+    setEditDetect(!editDetect);
     console.log(res);
   };
   const timerHandeler = (idx, time) => {
@@ -97,7 +145,6 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     setisOpen(true);
   };
   const createQuizehandle = async () => {
-    console.log(timer, "thhh ee dd");
     for (let i = 0; i < slides.length; i++) {
       if (slides[i].question === "") {
         setErr("All quize fields are required");
@@ -106,6 +153,28 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       if (quizeDetail?.quizeType === "Q&A" && slides[i].answer === "") {
         setErr("Answer fields are required");
         return;
+      }
+      if (slides[i]?.type !== "text&image") {
+        for (let j = 0; j < slides[i]?.options?.length; j++) {
+          if (slides[i]?.options[j] === "") {
+            setErr("All option field required");
+            return;
+          }
+        }
+      } else {
+        for (let j = 0; j < slides[i]?.options?.length; j++) {
+          console.log(slides[i]?.options[j]);
+          if (
+            slides[i]?.options[j]?.text === "" ||
+            slides[i]?.options[j]?.imgUrl === "" ||
+            slides[i]?.options[j] === "" ||
+            Object.keys(slides[i]?.options[j])?.length < 2
+          ) {
+            console.log(slides[i]?.options[j]);
+            setErr("All option field of img&url required");
+            return;
+          }
+        }
       }
     }
     setErr("");
@@ -122,16 +191,15 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     //---------------------
 
     const res = await createQuize(quizeDetail, timer, slides, quizAnalytic);
-
     if (res === 400) {
       console.log(res);
       return;
     }
+    
     setSuccessModal(true);
     setisQuizmodalopen(false);
     setDocumentId(res.documentId);
   };
-  // lll
 
   return (
     <div className={Style.container}>
@@ -253,6 +321,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       ) : (
         ""
       )}
+      <ToastContainer />
     </div>
   );
 };

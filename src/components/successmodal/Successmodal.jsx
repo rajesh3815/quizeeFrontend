@@ -1,13 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import Style from "./successmodal.module.css";
 import { quizContext } from "../../Quizcontext";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Successmodal = () => {
   const { setSuccessModal, setisOpen, documentId } = useContext(quizContext);
   const [inputVlaue, setInputValue] = useState();
   const shareClick = async () => {
     try {
       await navigator.clipboard.writeText(inputVlaue);
-      alert("copied");
+      toast.success("Link copied Successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -39,6 +51,7 @@ const Successmodal = () => {
           x
         </span>
       </div>
+      <ToastContainer />
     </div>
   );
 };

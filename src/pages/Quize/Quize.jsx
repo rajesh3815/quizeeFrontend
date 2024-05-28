@@ -73,7 +73,6 @@ const Quize = () => {
     //set impressions
     console.log(res?.quiz?._id);
   };
-
   const nextHandeler = async () => {
     console.log(currentSlide);
     if (currentSlide < quizDetail?.slides?.length - 1) {
@@ -159,7 +158,13 @@ const Quize = () => {
                   </span>
 
                   <div className={Style.quizes}>
-                    <span className={Style.countDown}>{countTimer}</span>
+                    {quizDetail?.quizeType === "Q&A" &&
+                      quizDetail.timer !== "off" && (
+                        <span className={Style.countDown}>
+                          00:{countTimer}s
+                        </span>
+                      )}
+
                     <p>{quizslide?.question}</p>
                     <div className={Style.optionDiv}>
                       {quizslide?.type === "imageurl" && (

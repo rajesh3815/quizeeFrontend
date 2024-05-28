@@ -3,11 +3,12 @@ import Style from "./Deletemodal.module.css";
 import { quizContext } from "../../Quizcontext";
 import { deleteQuize } from "../../api/quiz";
 const Deletemodal = () => {
-  const { deleteId, setdeleteId, deleteModal, setdeleteModal } =
+  const { deleteId, setdeleteId, deleteModal, setdeleteModal,deletDetect,setDeletDetect } =
     useContext(quizContext);
   const deleteclick = async () => {
     console.log(deleteId);
     const res = await deleteQuize(deleteId);
+    setDeletDetect(!deletDetect)
     console.log(res);
   };
   const cancelclick = () => {

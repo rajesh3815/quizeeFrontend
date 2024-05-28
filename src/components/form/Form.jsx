@@ -23,9 +23,12 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
   const changeHandeler = (e) => {
     setSlides((prev) => {
       const updatedSlides = [...prev];
+
       updatedSlides[curindex] = {
         ...updatedSlides[curindex],
         type: e.target.value,
+        options: ["", ""],
+        answer: "",
       };
       return updatedSlides;
     });
@@ -124,7 +127,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="text"
-            defaultChecked={slide.type === "text"}
+            checked={slide.type === "text"}
             onChange={changeHandeler}
           />
             <label htmlFor="html">Text</label>
@@ -135,7 +138,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="imageurl"
-            defaultChecked={slide.type === "imageurl"}
+            checked={slide.type === "imageurl"}
             onChange={changeHandeler}
           />
             <label htmlFor="html">Image URL</label>
@@ -146,7 +149,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
             id="html"
             name="optionsType"
             value="text&image"
-            defaultChecked={slide.type === "text&image"}
+            checked={slide.type === "text&image"}
             onChange={changeHandeler}
           />
           <label htmlFor="Text & Image URL">Text & Image URL</label>
@@ -157,6 +160,7 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
         {quizeType === "Q&A" ? (
           <>
             {slide?.options?.map((option, index) => {
+              
               return (
                 <div className={Style.optDiv} key={index}>
                   <input
@@ -164,11 +168,11 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
                     id="option"
                     name="options"
                     value={slide?.answer}
-                    defaultChecked={slide?.answer === index}
+                    defaultChecked={slide.answer === index }
                     onChange={() => answerChangehandle(index)}
                   />
                    {" "}
-                  <label htmlFor="option">
+                  <label style={{ display: "flex" }} htmlFor="option">
                     {slide.type === "text&image" ? (
                       <>
                         <input
@@ -288,7 +292,10 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
                     />
                   )}
                   {slide?.options.length > 2 && (
-                    <span style={{cursor:"pointer"}} onClick={() => deleteHandler(index)}>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => deleteHandler(index)}
+                    >
                       <img src={delImg} alt="" />
                     </span>
                   )}
@@ -298,7 +305,9 @@ const Form = ({ slide, setSlides, curindex, quizeType }) => {
           </>
         )}
         {slide?.options.length < 4 ? (
-          <span style={{cursor:"pointer"}} onClick={addOptionHandle}>Add Option</span>
+          <span style={{ cursor: "pointer" }} onClick={addOptionHandle}>
+            Add Option
+          </span>
         ) : (
           ""
         )}

@@ -6,6 +6,8 @@ import edImg from "../../assets/edit.svg";
 import delImg from "../../assets/delete.svg";
 import shImg from "../../assets/share.svg";
 import QnAnalysis from "../questionAnalysis/QnAnalysis";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Analytics = ({ setisQuizmodalopen }) => {
   const [allquzizedata, setAllquizedata] = useState([]);
   const [isQnAnalysis, setIsQnAnalysis] = useState(false);
@@ -18,10 +20,12 @@ const Analytics = ({ setisQuizmodalopen }) => {
     setUpdateTimer,
     setdeleteId,
     setdeleteModal,
+    deletDetect,
+    editDetect,
   } = useContext(quizContext);
   useEffect(() => {
     setupQuizedata();
-  }, []);
+  }, [deletDetect, editDetect]);
 
   const setupQuizedata = async () => {
     const quizeData = await getAllquizes();
@@ -56,7 +60,17 @@ const Analytics = ({ setisQuizmodalopen }) => {
     const baseUrl = `${window.location.protocol}//${window.location.host}/quiz/${id}`;
     try {
       await navigator.clipboard.writeText(baseUrl);
-      alert("copied");
+      toast.success("Link copied to clipboard", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +103,7 @@ const Analytics = ({ setisQuizmodalopen }) => {
                   <span>{index + 1}</span>
                   <span style={{ width: "1.5rem" }}>{data.quizeName}</span>
                   <span>{data.dateCreated}</span>
-                  <span>{data.impressionCount}</span>
+                  <span style={{ width: "9px" }}>{data.impressionCount}</span>
                   <div className={Style.quizFunc}>
                     <span onClick={() => updateHandeler(data._id)}>
                       <img src={edImg} />
@@ -111,6 +125,7 @@ const Analytics = ({ setisQuizmodalopen }) => {
               );
             })}
           </div>
+          <ToastContainer />
         </div>
       ) : (
         <QnAnalysis qnId={qnId} />
