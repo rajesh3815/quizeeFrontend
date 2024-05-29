@@ -35,7 +35,7 @@ const Dashboard = () => {
   };
   const trendingDatasetter = async () => {
     const res = await getTrendings();
-    console.log(res);
+    
     setTrendingData(res?.trendQuiz);
   };
   const formatDate = (dateString) => {

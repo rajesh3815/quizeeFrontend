@@ -1,5 +1,5 @@
 import axios from "axios";
-const staticUrl = "http://localhost:3000";
+const staticUrl = "https://quizeeserver.onrender.com";
 
 export const createQuize = async (
   { quizeName, quizeType },
@@ -84,12 +84,12 @@ export const deleteQuize = async (id) => {
 };
 //getting the details of the quize
 export const getQuizDetailbyid = async (id) => {
-  console.log(id);
+ 
   try {
     const res = await axios.get(
       `${staticUrl}/api/v1/quize/getQuizeDetailbyid/${id}`
     );
-    console.log(res.data);
+  
     return res.data;
   } catch (error) {
     console.log(error);
@@ -102,7 +102,6 @@ export const getDataQuize = async () => {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
     const res = await axios.get(`${staticUrl}/api/v1/quize/getAllquizeData`);
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -116,7 +115,7 @@ export const setImpressions = async (id) => {
     const res = await axios.patch(
       `${staticUrl}/api/v1/quize/setImpressins/${id}`
     );
-    console.log(res.data);
+   
     return res.data;
   } catch (error) {
     console.log(error);
@@ -128,7 +127,7 @@ export const getTrendings = async (id) => {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
     const res = await axios.get(`${staticUrl}/api/v1/quize/getTrendingQuize`);
-    console.log(res.data);
+  
     return res.data;
   } catch (error) {
     console.log(error);
@@ -143,7 +142,6 @@ export const setupAnalytics = async (id, cur, optionIdx) => {
       `${staticUrl}/api/v1/quize/setAnalytics/${id}`,
       { cur, optionIdx }
     );
-    console.log(res.data);
   } catch (error) {
     console.log(error);
   }

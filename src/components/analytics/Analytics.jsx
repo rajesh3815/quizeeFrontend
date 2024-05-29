@@ -35,7 +35,7 @@ const Analytics = ({ setisQuizmodalopen }) => {
       dateCreated: formatDate(data.dateCreated),
     }));
     setAllquizedata(formattedQuizeData);
-    console.log(allquzizedata);
+  
   };
 
   const formatDate = (dateString) => {
@@ -48,7 +48,7 @@ const Analytics = ({ setisQuizmodalopen }) => {
     setisOpen(false);
     setIsedit(true);
     const dataSlide = await getQuizbyid(id);
-    console.log(dataSlide, "from");
+    
     setupdateData(dataSlide);
     setUpdateTimer(dataSlide.timer);
   };

@@ -70,14 +70,14 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         }
       } else {
         for (let j = 0; j < slides[i]?.options?.length; j++) {
-          console.log(slides[i]?.options[j]);
+          
           if (
             slides[i]?.options[j]?.text === "" ||
             slides[i]?.options[j]?.imgUrl === "" ||
             slides[i]?.options[j] === "" ||
             Object.keys(slides[i]?.options[j])?.length < 2
           ) {
-            console.log(slides[i]?.options[j]);
+            
             setErr("All option field of img&url required");
             return;
           }
@@ -98,7 +98,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       transition: Bounce,
     });
     setEditDetect(!editDetect);
-    console.log(res);
+
   };
   const timerHandeler = (idx, time) => {
     setTimerIndex(idx);
@@ -129,7 +129,6 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       setSlides((prev) => {
         const updatedSlide = [...prev];
         updatedSlide.splice(idx, 1);
-        console.log(updatedSlide);
         return updatedSlide;
       });
 
@@ -146,6 +145,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   };
   const createQuizehandle = async () => {
     for (let i = 0; i < slides.length; i++) {
+      
       if (slides[i].question === "") {
         setErr("All quize fields are required");
         return;
@@ -163,20 +163,28 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         }
       } else {
         for (let j = 0; j < slides[i]?.options?.length; j++) {
-          console.log(slides[i]?.options[j]);
+         
           if (
             slides[i]?.options[j]?.text === "" ||
             slides[i]?.options[j]?.imgUrl === "" ||
             slides[i]?.options[j] === "" ||
             Object.keys(slides[i]?.options[j])?.length < 2
           ) {
-            console.log(slides[i]?.options[j]);
+           
             setErr("All option field of img&url required");
             return;
           }
         }
       }
     }
+
+    for(let i=1;i<slides?.length;i++){
+     if(slides[i].type!==slides[i-1].type){
+      setErr("All option type should equal!")
+      return
+     }
+    }
+
     setErr("");
     //setting up analytics
     let quizAnalytic = [];
@@ -187,7 +195,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         options: slide?.options?.map(() => ({ count: 0 })),
       }));
     }
-    console.log(quizAnalytic);
+
     //---------------------
 
     const res = await createQuize(quizeDetail, timer, slides, quizAnalytic);

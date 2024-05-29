@@ -3,7 +3,7 @@ import Style from "./Form.module.css";
 import delImg from "../../assets/delete.svg";
 const Form = ({ slide, setSlides, curindex, quizeType }) => {
   const addOptionHandle = () => {
-    console.log(slide);
+    
     setSlides((prev) => {
       const updatedSlides = [...prev];
       let updatedOptions = [...updatedSlides[curindex].options];

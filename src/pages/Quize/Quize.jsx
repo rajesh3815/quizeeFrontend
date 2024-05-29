@@ -37,7 +37,7 @@ const Quize = () => {
         setCountTimer(0);
       }
     }
-    console.log("hy");
+
     timerId.current = setInterval(() => {
       setCountTimer((prev) => prev - 1);
     }, 1000);
@@ -52,7 +52,6 @@ const Quize = () => {
         setupAnalytics(id, currentSlide, selectOption);
         setCurrentSlide((prev) => prev + 1);
         setSelectoption(null);
-        console.log(currentSlide);
       }
       if (countTimer === 0 && currentSlide === quizDetail?.slides?.length - 1) {
         submitHandeler();
@@ -60,25 +59,17 @@ const Quize = () => {
     }
   }, [countTimer]);
 
-  useEffect(() => {
-    console.log(totalAns);
-  }, [selectOption]);
-
   const getDetailsquize = async () => {
     const res = await getQuizDetailbyid(id);
     setQuizDetail(res.quiz);
     setAnsArray(Array(res?.quiz?.slides?.length).fill("null"));
-    console.log(res);
-    console.log(quizDetail.slides);
+
     //set impressions
-    console.log(res?.quiz?._id);
   };
   const nextHandeler = async () => {
-    console.log(currentSlide);
     if (currentSlide < quizDetail?.slides?.length - 1) {
       await setupAnalytics(id, currentSlide, selectOption);
       setCurrentSlide((prev) => prev + 1);
-      console.log(currentSlide);
     }
     setSelectoption(null);
   };
@@ -91,11 +82,9 @@ const Quize = () => {
     }
     const ans = Number(quizDetail?.slides[currentSlide]?.answer);
     if (ansArray[currentSlide] !== "null" && ansArray[currentSlide] === index) {
-      console.log(ansArray);
       return;
     }
     if (ansArray[currentSlide] !== "null" && ansArray[currentSlide] !== index) {
-      console.log("ins");
       setTotalAns((prev) => prev - 1);
       setAnsArray((prev) => {
         const upd = [...prev];
@@ -108,11 +97,10 @@ const Quize = () => {
       setTotalAns((prev) => prev + 1);
       setAnsArray((prev) => {
         const upd = [...prev];
-        console.log(upd);
+
         upd[currentSlide] = index;
         return upd;
       });
-      console.log(ansArray, "form a");
     }
   };
 

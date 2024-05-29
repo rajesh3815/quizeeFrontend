@@ -1,9 +1,11 @@
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import Styles from "./Home.module.css";
 import { loginUser, registerUser } from "../../auth/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Home = () => {
-  const nav=useNavigate()
+  const nav = useNavigate();
   const [issignup, setIssignup] = useState(true);
   const [inputType, setInputType] = useState("password");
   const [cnfpassword, setCnfpassword] = useState("password");
@@ -48,7 +50,7 @@ const Home = () => {
         flg = false;
         const { name } = e.target[i];
         if (e.target[i].value.trim() === "") {
-          console.log(inputType);
+          
           if (name === "password") {
             setInputType("text");
           }
@@ -69,6 +71,11 @@ const Home = () => {
         });
         return;
       }
+      //checking for email
+      const regEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+       if(!regEmail.test(signupForm.email)){
+        setSignupError((prev)=>{return {...prev,email:"Invalid Email.."}})
+       }
       //check for password matching
       if (signupForm.password !== signupForm.confirmPassword) {
         setCnfpassword("text");
@@ -77,8 +84,32 @@ const Home = () => {
         });
         return;
       }
-        let res = await registerUser(signupForm);
-    
+      let res = await registerUser(signupForm);
+      if (res === 2) {
+        toast.error("user Already exists", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+        return;
+      }
+      toast.success("registered successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     } else {
       const l = e.target.length;
       for (let i = 0; i < l; i++) {
@@ -94,22 +125,32 @@ const Home = () => {
         }
       }
       let res = await loginUser(loginForm);
-      if(res===500){
-        console.log("user dnd");
-        return
+      if (res === 500) {
+        toast.error("user doesnot exists", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+        return;
       }
-      if(res===400){
+      if (res === 400) {
         console.log("wrong password");
         return;
       }
-      if(res===0){
+      if (res === 0) {
         console.log("allfields are require");
         return;
       }
-      if(res===200){
-        nav('/dashboard')
+      if (res === 200) {
+        nav("/dashboard");
       }
-      console.log(res);
+   
     }
   };
   return (
@@ -273,6 +314,7 @@ const Home = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

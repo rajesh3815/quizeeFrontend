@@ -28,7 +28,7 @@ const Quizmodal = ({ isQuizmodalopen, setisQuizmodalopen }) => {
   };
   const quiztypehandel = (type) => {
     setQuizedetail((prev) => ({ ...prev, quizeType: type }));
-    console.log(quizeDetail);
+   
   };
   return (
     <div className={Style.mainContainer}>

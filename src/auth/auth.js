@@ -1,5 +1,5 @@
 import axios from "axios";
-const staticUrl = "http://localhost:3000";
+const staticUrl = "https://quizeeserver.onrender.com";
 
 export const registerUser = async ({ name, password, email }) => {
   try {
@@ -12,6 +12,8 @@ export const registerUser = async ({ name, password, email }) => {
     return res.data.status;
   } catch (error) {
     console.log(error);
+    return error
+    
   }
 };
 
