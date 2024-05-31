@@ -4,6 +4,7 @@ import { loginUser, registerUser } from "../../auth/auth";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../loader/Loader";
 const Home = () => {
   const nav = useNavigate();
   const [issignup, setIssignup] = useState(true);
@@ -50,7 +51,6 @@ const Home = () => {
         flg = false;
         const { name } = e.target[i];
         if (e.target[i].value.trim() === "") {
-          
           if (name === "password") {
             setInputType("text");
           }
@@ -73,9 +73,12 @@ const Home = () => {
       }
       //checking for email
       const regEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-       if(!regEmail.test(signupForm.email)){
-        setSignupError((prev)=>{return {...prev,email:"Invalid Email.."}})
-       }
+      if (!regEmail.test(signupForm.email)) {
+        setSignupError((prev) => {
+          return { ...prev, email: "Invalid Email.." };
+        });
+        return;
+      }
       //check for password matching
       if (signupForm.password !== signupForm.confirmPassword) {
         setCnfpassword("text");
@@ -85,6 +88,9 @@ const Home = () => {
         return;
       }
       let res = await registerUser(signupForm);
+      {
+        !res ? <Loader /> : "";
+      }
       if (res === 2) {
         toast.error("user Already exists", {
           position: "top-right",
@@ -110,6 +116,8 @@ const Home = () => {
         theme: "colored",
         transition: Slide,
       });
+      setIssignup(false)
+      console.log(issignup);
     } else {
       const l = e.target.length;
       for (let i = 0; i < l; i++) {
@@ -125,6 +133,7 @@ const Home = () => {
         }
       }
       let res = await loginUser(loginForm);
+      console.log(res);
       if (res === 500) {
         toast.error("user doesnot exists", {
           position: "top-right",
@@ -140,17 +149,37 @@ const Home = () => {
         return;
       }
       if (res === 400) {
-        console.log("wrong password");
+        toast.error("wrong password", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+
         return;
       }
       if (res === 0) {
-        console.log("allfields are require");
+        toast.error("all fields are required", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
         return;
       }
       if (res === 200) {
         nav("/dashboard");
       }
-   
     }
   };
   return (

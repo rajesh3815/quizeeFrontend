@@ -23,11 +23,13 @@ export const loginUser = async ({ password, email }) => {
       email,
       password,
     });
-    console.log(response.data);
+    console.log(response.data.status);
     localStorage.setItem("token", response.data.token);
     localStorage.setItem("userId", response.data.userId);
     return response.data.status;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data.status);
+    return error.response.data.status
+  
   }
 };

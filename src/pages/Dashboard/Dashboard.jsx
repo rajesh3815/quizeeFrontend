@@ -7,7 +7,15 @@ import Deletemodal from "../../components/deletemodal/Deletemodal";
 import Successmodal from "../../components/successmodal/Successmodal";
 import { getDataQuize, getTrendings } from "../../api/quiz";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
+  useEffect(() => {
+    const user = localStorage.getItem("userId");
+    if (!user) {
+      nav("/");
+    }
+  }, []);
+  const nav = useNavigate();
   const [toggle, setToggle] = useState();
   const [isQuizmodalopen, setisQuizmodalopen] = useState(false);
   const [navState, setnavState] = useState("Dashboard");
@@ -35,8 +43,12 @@ const Dashboard = () => {
   };
   const trendingDatasetter = async () => {
     const res = await getTrendings();
-    
+
     setTrendingData(res?.trendQuiz);
+  };
+  const logoutHandeler = () => {
+    localStorage.removeItem("userId");
+    nav("/");
   };
   const formatDate = (dateString) => {
     const newDate = new Date(dateString);
@@ -67,7 +79,10 @@ const Dashboard = () => {
               CreateQuize
             </p>
           </div>
-          <div>Logout</div>
+          <div className={Style.logOutdiv}>
+            <hr />
+            <span onClick={logoutHandeler}>Logout</span>
+          </div>
         </div>
         <div className={Style.contenet}>
           {navState === "Dashboard" ? (
@@ -113,14 +128,18 @@ const Dashboard = () => {
                       <div className={Style.chipCard} key={idx}>
                         <div className={Style.chipHero}>
                           {" "}
-                          <span style={{fontWeight:"700",fontSize:"1.7rem"}}>{trend.quizeName}</span>
+                          <span
+                            style={{ fontWeight: "700", fontSize: "1.7rem" }}
+                          >
+                            {trend.quizeName}
+                          </span>
                           <span
                             style={{
                               fontSize: "1.3rem",
                               fontWeight: "600",
                               color: "rgba(255, 93, 1, 1)",
-                              display:"flex",
-                              alignItems:"center"
+                              display: "flex",
+                              alignItems: "center",
                             }}
                           >
                             {trend.impressionCount}
@@ -128,7 +147,9 @@ const Dashboard = () => {
                           </span>
                         </div>
 
-                        <span className={Style.crreated}>created on:{formatDate(trend.dateCreated)}</span>
+                        <span className={Style.crreated}>
+                          created on:{formatDate(trend.dateCreated)}
+                        </span>
                       </div>
                     );
                   })}

@@ -67,9 +67,10 @@ const Quize = () => {
     //set impressions
   };
   const nextHandeler = async () => {
+    
     if (currentSlide < quizDetail?.slides?.length - 1) {
-      await setupAnalytics(id, currentSlide, selectOption);
       setCurrentSlide((prev) => prev + 1);
+      await setupAnalytics(id, currentSlide, selectOption);
     }
     setSelectoption(null);
   };
