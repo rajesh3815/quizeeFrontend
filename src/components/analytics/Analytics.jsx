@@ -35,7 +35,6 @@ const Analytics = ({ setisQuizmodalopen }) => {
       dateCreated: formatDate(data.dateCreated),
     }));
     setAllquizedata(formattedQuizeData);
-  
   };
 
   const formatDate = (dateString) => {
@@ -48,7 +47,7 @@ const Analytics = ({ setisQuizmodalopen }) => {
     setisOpen(false);
     setIsedit(true);
     const dataSlide = await getQuizbyid(id);
-    
+
     setupdateData(dataSlide);
     setUpdateTimer(dataSlide.timer);
   };
@@ -100,10 +99,10 @@ const Analytics = ({ setisQuizmodalopen }) => {
                   }}
                   className={Style.quizeDetail}
                 >
-                  <span>{index + 1}</span>
-                  <span style={{ width: "1.5rem" }}>{data.quizeName}</span>
-                  <span>{data.dateCreated}</span>
-                  <span style={{ width: "9px" }}>{data.impressionCount}</span>
+                  <span className={Style.span1}>{index + 1}</span>
+                  <span className={Style.span2}>{data.quizeName}</span>
+                  <span className={Style.span3}>{data.dateCreated}</span>
+                  <span className={Style.span4}>{data.impressionCount}</span>
                   <div className={Style.quizFunc}>
                     <span onClick={() => updateHandeler(data._id)}>
                       <img src={edImg} />
@@ -119,7 +118,9 @@ const Analytics = ({ setisQuizmodalopen }) => {
                     onClick={() => analysisClick(data)}
                     className={Style.qnAnalysis}
                   >
-                    <u>Question Wise Analysis</u>
+                    <u style={{ width: "10rem", fontSize: "14px" }}>
+                      Question Wise Analysis
+                    </u>
                   </span>
                 </div>
               );

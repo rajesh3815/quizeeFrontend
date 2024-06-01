@@ -88,9 +88,6 @@ const Home = () => {
         return;
       }
       let res = await registerUser(signupForm);
-      {
-        !res ? <Loader /> : "";
-      }
       if (res === 2) {
         toast.error("user Already exists", {
           position: "top-right",

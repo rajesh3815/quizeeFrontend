@@ -4,6 +4,8 @@
     padding: 3rem 5rem;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
+    background: #edebeb;
+    height: max-content;
 }
 
 .QAcontainer {}
@@ -61,7 +63,8 @@
     color: rgba(71, 68, 68, 1);
     width: 16rem;
 }
-.pollCard{
+
+.pollCard {
     display: flex;
     padding: 1rem 1rem;
     align-items: center;

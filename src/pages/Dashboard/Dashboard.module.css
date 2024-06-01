@@ -1,12 +1,12 @@
 .mainContainer {
     display: flex;
-    width: 100vw;
     height: 100%;
     font-family: sans-serif;
 }
 
 .sidebar {
-    width: 15%;
+    width: 15vw;
+    position: fixed;
     height: 100vh;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     background-color: rgba(255, 255, 255, 1);
@@ -20,6 +20,9 @@
     background-color: rgba(237, 237, 237, 1);
     width: 85vw;
     height: 100vh;
+    position: absolute;
+    right: 0;
+
 }
 
 .heding {
@@ -44,7 +47,7 @@
 }
 
 .dashboardContainer {
-    margin-top: 6rem;
+    margin-top: 6rem;flex-wrap: wrap;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,7 +59,8 @@
     width: 56rem;
     /* border: 1px solid black; */
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 3rem;
 }
 
