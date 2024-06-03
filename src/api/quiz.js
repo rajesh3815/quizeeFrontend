@@ -19,7 +19,7 @@ export const createQuize = async (
       timer,
       quizAnalytic,
     });
-    console.log(res.data);
+   
     return res.data;
   } catch (error) {
     console.log(error);
@@ -32,7 +32,6 @@ export const getAllquizes = async () => {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
     const res = await axios.get(`${staticUrl}/api/v1/quize/getAllquize`);
-    console.log(res.data.quizes);
     return res.data.quizes;
   } catch (error) {
     console.log(error);
@@ -40,12 +39,11 @@ export const getAllquizes = async () => {
 };
 
 export const getQuizbyid = async (id) => {
-  console.log(id);
+
   try {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
     const res = await axios.get(`${staticUrl}/api/v1/quize/getQuizebyid/${id}`);
-    console.log(res.data.quizSlide);
     return res.data.quizSlide;
   } catch (error) {
     console.log(error);
@@ -53,7 +51,7 @@ export const getQuizbyid = async (id) => {
 };
 
 export const editQuiz = async (id, slides, timer) => {
-  console.log(id);
+
   try {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
@@ -61,7 +59,7 @@ export const editQuiz = async (id, slides, timer) => {
       `${staticUrl}/api/v1/quize/updateQuize/${id}`,
       { slides, timer }
     );
-    console.log(res.data);
+   
     return res.data;
   } catch (error) {
     console.log(error);
@@ -69,14 +67,14 @@ export const editQuiz = async (id, slides, timer) => {
 };
 
 export const deleteQuize = async (id) => {
-  console.log(id);
+ 
   try {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token;
     const res = await axios.delete(
       `${staticUrl}/api/v1/quize/deleteQuize/${id}`
     );
-    console.log(res.data);
+  
     return res.data;
   } catch (error) {
     console.log(error);
