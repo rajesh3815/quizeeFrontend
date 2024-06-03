@@ -55,6 +55,17 @@ const Dashboard = () => {
     const option = { day: "2-digit", month: "long", year: "numeric" };
     return newDate.toLocaleDateString("en-US", option);
   };
+  const formatImpression = (count) => {
+    if (count === 1000) {
+      return "1k";
+    }
+    if (count < 1000) {
+      return count;
+    }
+    count /= 1000;
+    count = count.toFixed(1);
+    return count + "K";
+  };
   return (
     <>
       <div className={Style.mainContainer}>
@@ -114,7 +125,7 @@ const Dashboard = () => {
                 >
                   <span className={Style.dataNumber}>
                     {dashBordData?.totalImpression
-                      ? dashBordData?.totalImpression
+                      ? formatImpression(dashBordData?.totalImpression)
                       : 0}
                   </span>{" "}
                   total impressions

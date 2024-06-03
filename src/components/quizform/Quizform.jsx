@@ -3,8 +3,8 @@ import Style from "./Quizform.module.css";
 import Form from "../form/Form";
 import { createQuize, editQuiz } from "../../api/quiz";
 import { quizContext } from "../../Quizcontext";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast,Bounce } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   const [slides, setSlides] = useState([
     { question: "", type: "text", options: ["", ""], answer: "" },
@@ -70,14 +70,12 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         }
       } else {
         for (let j = 0; j < slides[i]?.options?.length; j++) {
-          
           if (
             slides[i]?.options[j]?.text === "" ||
             slides[i]?.options[j]?.imgUrl === "" ||
             slides[i]?.options[j] === "" ||
             Object.keys(slides[i]?.options[j])?.length < 2
           ) {
-            
             setErr("All option field of img&url required");
             return;
           }
@@ -86,19 +84,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
     }
     setErr("");
     const res = await editQuiz(id, slides, timer);
-    toast.success("Quiz edited Successfully", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
     setEditDetect(!editDetect);
-
   };
   const timerHandeler = (idx, time) => {
     setTimerIndex(idx);
@@ -145,7 +131,6 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
   };
   const createQuizehandle = async () => {
     for (let i = 0; i < slides.length; i++) {
-      
       if (slides[i].question === "") {
         setErr("All quize fields are required");
         return;
@@ -163,14 +148,12 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
         }
       } else {
         for (let j = 0; j < slides[i]?.options?.length; j++) {
-         
           if (
             slides[i]?.options[j]?.text === "" ||
             slides[i]?.options[j]?.imgUrl === "" ||
             slides[i]?.options[j] === "" ||
             Object.keys(slides[i]?.options[j])?.length < 2
           ) {
-           
             setErr("All option field of img&url required");
             return;
           }
@@ -178,11 +161,11 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       }
     }
 
-    for(let i=1;i<slides?.length;i++){
-     if(slides[i].type!==slides[i-1].type){
-      setErr("All option type should equal!")
-      return
-     }
+    for (let i = 1; i < slides?.length; i++) {
+      if (slides[i].type !== slides[i - 1].type) {
+        setErr("All option type should equal!");
+        return;
+      }
     }
 
     setErr("");
@@ -203,7 +186,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       console.log(res);
       return;
     }
-    
+
     setSuccessModal(true);
     setisQuizmodalopen(false);
     setDocumentId(res.documentId);
@@ -329,7 +312,7 @@ const Quizform = ({ quizeDetail, setQuizedetail, setisQuizmodalopen }) => {
       ) : (
         ""
       )}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };
