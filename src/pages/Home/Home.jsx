@@ -88,6 +88,7 @@ const Home = () => {
         return;
       }
       let res = await registerUser(signupForm);
+
       if (res === 2) {
         toast.error("user Already exists", {
           position: "top-right",
@@ -113,8 +114,7 @@ const Home = () => {
         theme: "colored",
         transition: Slide,
       });
-      setIssignup(false)
-      console.log(issignup);
+      setIssignup(false);
     } else {
       const l = e.target.length;
       for (let i = 0; i < l; i++) {

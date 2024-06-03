@@ -54,7 +54,9 @@ const Quize = () => {
         setSelectoption(null);
       }
       if (countTimer === 0 && currentSlide === quizDetail?.slides?.length - 1) {
-        submitHandeler();
+        if (!isQuizcompleted) {
+          submitHandeler();
+        }
       }
     }
   }, [countTimer]);
@@ -67,7 +69,6 @@ const Quize = () => {
     //set impressions
   };
   const nextHandeler = async () => {
-    
     if (currentSlide < quizDetail?.slides?.length - 1) {
       setCurrentSlide((prev) => prev + 1);
       await setupAnalytics(id, currentSlide, selectOption);
